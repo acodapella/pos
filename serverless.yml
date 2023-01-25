@@ -1,0 +1,27 @@
+service: point-of-interest
+
+provider:
+  name: aws
+  runtime: java8
+  memorySize: 1512
+  timeout: 30
+  stage: ${opt:stage,'dev'}
+  region: ${opt:region, 'us-west-2'}
+  profile: ${opt:profile, "default"}
+  endpointType: REGIONAL
+
+resources:
+  Description: REST Point of interest API
+
+package:
+  individually: true
+
+functions:
+  PointOfInterestApi:
+    package:
+      artifact: target/Point-of-interest-0.0.1-SNAPSHOT-lambda-package.zip
+    handler: com.earthdaily.pos.aws.StreamLambdaHandler::handleRequest
+    events:
+      - http:
+          path: /{proxy+}
+          method: ANY

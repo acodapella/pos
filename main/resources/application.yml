@@ -1,0 +1,45 @@
+spring:
+  profiles:
+    active: dev
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+  metrics:
+    web:
+      server:
+        auto-time-requests: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: metrics
+---
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/earthdaily
+    username: postgres
+    password:
+  config:
+    activate:
+      on-profile: dev
+---
+spring:
+  datasource:
+    url: jdbc:h2:mem:earthdaily
+  driverClassName: org.h2.Driver
+  config:
+    activate:
+      on-profile: test
+---
+spring:
+  datasource:
+    url: jdbc:postgresql://earthdaily.cbzoczhkm8v6.us-west-2.rds.amazonaws.com:5432/earthdaily
+    username: postgres
+    password: postgres
+  config:
+    activate:
+      on-profile: aws
